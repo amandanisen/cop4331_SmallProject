@@ -1,166 +1,147 @@
 <html>
-<head>
-    
+  <head>
+        
     <script type="text/javascript" src="js/md5.js"></script>
     <script type="text/javascript" src="js/smallProject.js"></script>
-
+    
     <style>
-        body{
-            background-color: white;
-        }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      background-color: #3399ff;
+    }
 
-        #title{
-            font-size: 40px;
-            width: 100%;
-            margin: 2% 5%;
-            text-align: right;
-            font-family: Verdana, Arial, sans-serif;
-            color: #FFFFFF;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        #loginDiv{
-            font-size: 30px;
-            width: 70%;
-            margin-left: 15%;
-            padding: 25px;
-            color: white;
-        }
+    /* style the container */
+    .container {
+      position: relative;
+      border-radius: 5px;
+      background-color: #3399ff;
+      padding: 20px 0 30px 0;
+    } 
 
-        #loggedInDiv{
-            font-size: 30px;
-            width: 70%;
-            margin-left: 15%;
-            padding: 25px;
-            background-color: #b2b2b2;
-        }
+    .button{
+        background-color: #FFD045;
+        color: black;
+        font-size: 20px;
+                padding: 12px;
+        border: none;
+        border-radius: 8px;
+        margin: 5px 0;
+        border: none;
+        cursor: pointer;
+        width:100%;
+        margin: 5px 0;
+        font-size: 20px;       
+    }
 
-        #accessUIDiv{
-            font-size: 30px;
-            width: 70%;
-            margin-left: 15%;
-            padding: 25px;
-            background-color: #b2b2b2;
-        }
+    .button:hover {
+      opacity: 1;
+    }
 
-        .buttons{
-            background-color: #FFD045;
-                color: black;
-                font-size: 20px;
-                padding: 10px 60px;
-                border-radius: 8px;
-                margin: 4px 0;
-                border: none;
-                cursor: pointer;
-                width:auto;
-                margin-left: 40%;
-        }
+    /* button */
+    .button1 {
+        background-color: #ffbf1c; 
+        color: white; 
+        cursor: pointer;
+        border: 2px solid #ffbf1c;
+        text-align: center;
+    }
 
-        .buttons:hover{
-            background-color: #000;
-            color: #FFFFFF;
-            opacity: 50%;
-        }
+    .button2 {
+        background-color: #3399ff; 
+        color: white; 
+        cursor: pointer;
+        border: 2px solid #ffbf1c;
+        text-align: center;
+    }
 
-        #loginName{
-            font-size: 20px;
-        }
-        
-        #loginPassword{
-            font-size: 20px;
-        }
-        
-        #searchText{
-            font-size: 20px;
-        }
-        
-        #colorText{
-            font-size: 30px;
-        }
+    .button3 {
+        background-color: #3399ff; 
+        color: white; 
+        cursor: pointer;
+        text-align: center;
+    }
 
-        input[type="text"],input[type="password"]{
-            width: 100%;
-            padding: 12px 20px;
-            margin: 4px 0;
-            display: black;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            font-family: Verdana, Arial, sans-serif;
-        }
+    .button1:hover {
+      background-color: #ff6600;
+      color: white;
+    }
 
-        #inner-title{
-            display: inline-block;
-            font-size: 40px;
-            width: 90%;
-            text-align: center;
-            margin-left: 5%;
-            margin-bottom: 2%;
-            font-family: Verdana, Arial, sans-serif;
-            color: #FFBF1C;
-        }
+    .button2:hover {
+      background-color: #0033cc;
+    }
 
-        #loginResult{
-            display: inline-block;
-            font-size: 0.8em;
-            width: 90%;
-            text-align: center;
-            margin-left: 5%;
-            margin-bottom: 2%;
-            font-family: Verdana, Arial, sans-serif;
-            color: #ffffff;
-        }
+    .button3:hover {
+      color: #000;
+    }
 
-        #userName{
-            display: inline-block;
-            width: 80%;
-            margin-left: 10%;
-            text-align: center;
-        }
+    /* Two-column layout */
+    .col {
+      float: left;
+      width: 50%;
+      margin: auto;
+      padding: 0 50px;
+      margin-top: 6px;
+    }
 
-        #logoutButton{
-            width: 20%;
-            margin-left: 40%;
-        }
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
 
-        select{
-            width: 30%;
-            margin-left: 35%;
-            margin-top: 2%;
-            font-size: 0.75em;
-            font-family: Verdana, Arial, sans-serif;
-        }
-
-        #colorSearchResult{
-            display: none;
-        }
-
-        #colorAddResult{
-            display: inline-block;
-            font-size: 0.8em;
-            width: 90%;
-            text-align: center;
-            margin-left: 5%;
-            margin-top: 2%;
-            margin-bottom: 1%;
-            font-family: Verdana, Arial, sans-serif;
-            color: #ffffff;
-        }
+    /* Responsive layout - stack on top of each other instead of next to each other in case too zoomed in*/
+    @media screen and (max-width: 650px) {
+      .col {
+        width: 100%;
+        margin-top: 0;
+      }
+      /* hide the vertical line */
+      .vl {
+        display: none;
+      }
+      /* show the hidden text on small screens */
+      .hide-md-lg {
+        display: block;
+        text-align: center;
+      }
+    }
     </style>
+  </head>
 
-    <title>COP 4331 - LAMP Stack Small Project - Group 20</title>
+  <body>
+    <div class="container">
+          <div class="row">
+          
+          <div class="vl">
+            <span class="vl-innertext"></span>
+          </div>
+          
+          <div class="col">
+            <img src="images/homeprof.png" alt="Batter Call Rick">
+          </div>
 
+          <div class="col">
+            <div class="hide-md-lg">
+              <p></p>
+            </div>
 
-</head>
-<body>
-
-    <h1 id="title">Log In</h1>
-
-    <div id="loginDiv">
-        <span id="inner-title">LOG IN</span>
-        <input type="text" id="loginName" placeholder="Username" /><br />
-        <input type="password" id="loginPassword" placeholder="Password"/><br />
-        <button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Do It </button>
-        <span id="loginResult"></span>
+            <h2 style="text-align:center; font-size:40px">Better Call Rick</h2>
+            
+            <button class="button button1" onclick="window.location='login.html'">Log In</button>
+            
+            <button class="button button2" onclick="window.location='signup.html'">Sign Up</button>
+            
+            <button class="button button3" onclick="window.location='https://google.com'">Forgot Password?</button>
+            
+          </div>
+        </div>
+      
     </div>
-
-</body>
+  </body>
 </html>
