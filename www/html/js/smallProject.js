@@ -5,8 +5,89 @@ var userId = 0;
 var firstName = "";
 var lastName = "";
 
-function doSignUp(){
+var phoneNum = "";
 
+function doSignUp(){
+	userId = 0;
+
+	// TODO: 
+	firstName = "";
+	lastName = "";
+	phoneNum = ""
+	
+	var email = document.getElementById("signupName").value;
+
+	console.log(email);
+
+	var password = document.getElementById("signupPassword").value;
+//	var hash = md5( password );
+
+	var confirmPass = document.getElementById("confirmPassword").value;
+
+	if (password == confirmPass) 
+	{
+		document.getElementById("loginResult").innerHTML = "";
+
+		// "email": "TestEmail@Test.com",
+  		// "password": "password123",
+  		// "firstname": "Landon",
+  		// "lastname": "Russell",
+  		// "phone": "407-938-4910"
+
+		var json = {email:email,password:password,firstname:firstName, lastname:lastName,phone:phoneNum};
+
+		// translating
+		var jsonPayload = JSON.stringify(json);
+
+		console.log(jsonPayload);
+		
+		var url = urlBase + '/Signup.' + extension;
+
+		console.log(url);
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+		xhr.setRequestHeader("accept", "application/json");
+		try
+		{
+			xhr.onreadystatechange = function() 
+			{
+				console.log(this.status);
+				if (this.readyState == 4 && this.status == 201) 
+				{
+					var jsonObject = JSON.parse( xhr.responseText );
+
+					// creating json object and fillig the fiels on the database
+					console.log(jsonObject);
+					userId = jsonObject.id;
+
+					console.log(userId);
+					
+					localStorage.setItem("userIDInput",userId);
+
+					localStorage.getItem("userIDInput");
+			
+					firstName = jsonObject.firstName;
+					lastName = jsonObject.lastName;
+
+					saveCookie();
+		
+					window.location.href = "contactmanager.html";
+				}
+			};
+			xhr.send(jsonPayload);
+		}
+		catch(err)
+		{
+			document.getElementById("loginResult").innerHTML = err.message;
+		}
+	}
+
+	else {
+		// make conf pass red
+	}
+	
 }
 
 function doLogin()
@@ -93,6 +174,9 @@ function readCookie()
 	{
 		var thisOne = splits[i].trim();
 		var tokens = thisOne.split("=");
+
+		console.log(tokens[0]);
+
 		if( tokens[0] == "firstName" )
 		{
 			firstName = tokens[1];
@@ -105,6 +189,7 @@ function readCookie()
 		{
 			userId = parseInt( tokens[1].trim() );
 		}
+
 	}
 	
 	if( userId < 0 )
@@ -114,6 +199,7 @@ function readCookie()
 	else
 	{
 		document.getElementById("userName").innerHTML = "Welcome " + firstName + " " + lastName;
+		console.log(userId);
 	}
 }
 
