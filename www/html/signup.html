@@ -19,7 +19,7 @@
             color: #FFFFFF;
         }
 
-        #loginDiv{
+        #signupDiv{
             font-size: 30px;
             width: 70%;
             margin-left: 15%;
@@ -27,7 +27,7 @@
             color: white;
         }
 
-        #loggedInDiv{
+        #signnedinDiv{
             font-size: 30px;
             width: 70%;
             margin-left: 15%;
@@ -62,11 +62,11 @@
             opacity: 50%;
         }
 
-        #loginName{
+        #signupName{
             font-size: 20px;
         }
         
-        #loginPassword{
+        #signupPassword{
             font-size: 20px;
         }
 
@@ -156,13 +156,13 @@
 
     <h1 id="title">Sign Up</h1>
 
-    <div id="loginDiv">
+    <div id="signupDiv">
         <span id="inner-title">Sign Up</span>
-        <input type="text" id="loginName" placeholder="Username" /><br />
-        <input type="password" id="loginPassword" placeholder="Password"/><br />
+        <input type="text" id="signupName" placeholder="Username" /><br />
+        <input type="password" id="signupPassword" placeholder="Password"/><br />
         <input type="password" id="confirmPassword" placeholder="Confirm Password"/><br/>
-        <button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Submit </button>
-        <button style="background-color: red; margin-left:39%;" type="button" id="loginButton" class="buttons" onclick="window.location='index.html'"> Return Home </button>
+        <button type="button" id="signupButton" class="buttons" onclick="doSignUp();"> Submit </button>
+        <button style="background-color: red; margin-left:39%;" type="button" id="signupButton" class="buttons" onclick="window.location='index.html'"> Return Home </button>
 
         <span id="loginResult"></span>
     </div>

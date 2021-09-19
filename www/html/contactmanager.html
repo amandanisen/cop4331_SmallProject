@@ -7,6 +7,10 @@
         {
             readCookie();
         }, false);
+
+        localStorage.getItem("userIDInput");
+
+        console.log(localStorage.getItem("userIDInput"));
         </script>
         
         <style>
@@ -63,23 +67,19 @@
         <button id="logoutButton" class="buttons" style="background-color: red;" onclick="doLogout()"> Log Out </button>
     </div>
 
-        
     <div id="accessUIDiv">
         <br />
 
-        <button type="button" id="addContactButton" class="buttons" onclick="window.location='add.html'"> Add </button><br />
-        <span id="contactAddResult"></span>
-        <button type="button" id="searchContactButton" class="buttons" onclick ="window.location='search.html'">Search</button><br />
-        <span id="contactSearchResult"></span>
-        <p id="searchList">
-        <button type="button" id="editContactButton" class="buttons" onclick ="window.location='edit.html'">Edit</button><br />
-        <span id="ccontactEditResult"></span>
+        <button type="button" id="addColorButton" class="buttons" onclick="window.location='add.html'"> Add </button><br />
+        <span id="colorAddResult"></span>
+
+        <input type="text" id="searchText" placeholder="Color To Search For"/>
+        <button type="button" id="searchColorButton" class="buttons" onclick="searchColor();"> Search</button><br />
+        <span id="colorSearchResult"></span>
+        <p id="colorList">
         </p><br /><br />
     </div>
-    
-        
-        
-        
+
     <table>
         <tr style = "background-color: #003399; color: white;">
           <th>First Name</th>
@@ -87,6 +87,11 @@
           <th>Phone Number</th>
         </tr>
         <tr>
+        
+        
+
+
+
     </table>
 
     </body>
