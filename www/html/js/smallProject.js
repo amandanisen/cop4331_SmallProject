@@ -129,7 +129,6 @@ function doLogout()
 
 
 
-
 function addContact()
 {
 	var newContactID = document.getElementById("addID").value;
@@ -142,11 +141,12 @@ function addContact()
 	var tmp = {userID:newContactID,firstname:newContactFirst,lastname:newContactLast,phone:newNumber};
 	var jsonPayload = JSON.stringify( tmp );
 
-	var url = urlBase + '/AddColor.' + extension;
+	var url = urlBase + '/AddContact.' + extension;
 	
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	xhr.setRequestHeader("accept", "application/json");
 	try
 	{
 		xhr.onreadystatechange = function() 
@@ -165,50 +165,65 @@ function addContact()
 	
 }
 
-
-
-
-
-function searchColor()
+function searchContact()
 {
-	var srch = document.getElementById("searchText").value;
-	document.getElementById("colorSearchResult").innerHTML = "";
+	var srch = document.getElementById("searchNumber").value;
+	document.getElementById("contactSearchResult").innerHTML = "";
 	
-	var colorList = "";
+	var contactList = "";
 
-	var tmp = {search:srch,userId:userId};
+	var tmp = {phone:srch};
 	var jsonPayload = JSON.stringify( tmp );
 
-	var url = urlBase + '/SearchColors.' + extension;
+	var url = urlBase + '/SearchContact.' + extension;
 	
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	xhr.setRequestHeader("accept", "application/json");
 	try
 	{
 		xhr.onreadystatechange = function() 
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				document.getElementById("colorSearchResult").innerHTML = "Contact(s) has been retrieved";
+				document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
 				var jsonObject = JSON.parse( xhr.responseText );
 				
 				for( var i=0; i<jsonObject.results.length; i++ )
 				{
-					colorList += jsonObject.results[i];
+					contactList += jsonObject.results[i];
 					if( i < jsonObject.results.length - 1 )
 					{
-						colorList += "<br />\r\n";
+						contactList += "<br />\r\n";
 					}
 				}
 				
-				document.getElementsByTagName("p")[0].innerHTML = colorList;
+				document.getElementsByTagName("p")[0].innerHTML = contactList;
 			}
 		};
 		xhr.send(jsonPayload);
 	}
 	catch(err)
 	{
-		document.getElementById("colorSearchResult").innerHTML = err.message;
+		document.getElementById("contactSearchResult").innerHTML = err.message;
 	}
+}
+
+function editContact()
+{
+
+
+
+
+}
+
+
+function deleteContact()
+{
+
+
+
+
+
 }
