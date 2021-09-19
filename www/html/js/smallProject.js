@@ -126,12 +126,20 @@ function doLogout()
 	window.location.href = "index.html";
 }
 
-function addColor()
-{
-	var newColor = document.getElementById("colorText").value;
-	document.getElementById("colorAddResult").innerHTML = "";
 
-	var tmp = {color:newColor,userId,userId};
+
+
+
+function addContact()
+{
+	var newContactID = document.getElementById("addID").value;
+	var newContactFirst = document.getElementById("addFirstName").value;
+	var newContactLast  = document.getElementById("addLastname").value;
+	var newNumber = document.getElementById("addNumber").value;
+
+	document.getElementById("AddResult").innerHTML = "";
+
+	var tmp = {userID:newContactID,firstname:newContactFirst,lastname:newContactLast,phone:newNumber};
 	var jsonPayload = JSON.stringify( tmp );
 
 	var url = urlBase + '/AddColor.' + extension;
@@ -145,17 +153,21 @@ function addColor()
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				document.getElementById("colorAddResult").innerHTML = "Contact has been added";
+				document.getElementById("AddResult").innerHTML = "Contact has been added";
 			}
 		};
 		xhr.send(jsonPayload);
 	}
 	catch(err)
 	{
-		document.getElementById("colorAddResult").innerHTML = err.message;
+		document.getElementById("AddResult").innerHTML = err.message;
 	}
 	
 }
+
+
+
+
 
 function searchColor()
 {
