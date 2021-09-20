@@ -303,6 +303,7 @@ function displayContactsAsATable(isSearch) {
 					row.innerHTML = 
 						`
 						<td>
+							<i class="fa fa-pencil" aria-hidden="true" onclick="editContact('${currentContact.ID}')"></i>
 							<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
 							${currentContact.FirstName + " " + currentContact.LastName}</td>
 						
@@ -316,7 +317,8 @@ function displayContactsAsATable(isSearch) {
 			row.innerHTML = 
 			`
 			<td>
-				<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
+			<i class="fa fa-pencil" aria-hidden="true" onclick="edit('${currentContact.ID}')"></i>
+			<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
 				${currentContact.FirstName + " " + currentContact.LastName}</td>
 			
 			<td>${currentContact.Phone}</td>
@@ -354,6 +356,8 @@ function deleteContact(contactDeleteID){
 				displayContactsAsATable(false);
 
 			}
+			displayContactsAsATable(false);
+
 		  } 
 		}
 	  }
@@ -392,6 +396,7 @@ function deletePostRequest(contactId){
 		
 				if( message.includes("successfully") )
 				{		
+					displayContactsAsATable(false);
 					// document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
 					return true;
 				}else{
@@ -456,6 +461,94 @@ function addContact()
 	catch(err)
 	{
 		document.getElementById("AddResult").innerHTML = err.message;
+	}
+}
+
+function edit(contactID) {
+    for (let i = 0; i < contactListArray.length; i++) {
+		console.log(contactListArray[i].ID.toString());
+		console.log("contactID.toString(): "+ contactID.toString());
+
+      if (contactListArray[i].ID.toString() === contactID.toString()) {
+        document.querySelector('.overlay').style.display = 'block';
+        document.querySelector('.update').style.display = 'block';
+        document.querySelector('.update .name').value = contactListArray[i].FirstName;
+		document.querySelector('.update .lastname').value = contactListArray[i].LastName;
+        document.querySelector('.update .phone').value = contactListArray[i].Phone;
+        document.querySelector('.update button').addEventListener('click', (e) => {
+          e.preventDefault();
+          editContact(i);
+        });
+      }
+    }
+    displayContactsAsATable(false);
+  }
+  
+  function editContact(idx) {
+	console.log("in edit: "+ contactListArray[idx].ID.toString());
+    let name = document.querySelector('.update .name').value;
+	let lastname = document.querySelector('.update .lastname').value;
+    let phone = document.querySelector('.update .phone').value;
+	//if this was successful, close window
+	editContactRequest(contactListArray[idx].ID.toString(), name, lastname, phone, idx);
+	displayContactsAsATable(false);
+	document.querySelector('.overlay').style.display = 'none';
+	document.querySelector('.update').style.display = 'none';
+	
+   
+  }
+  
+  function closeUpdate() {
+    document.querySelector('.overlay').style.display = 'none';
+    document.querySelector('.update').style.display = 'none';
+  }
+
+
+
+
+function editContactRequest(selectedID, newContactFirst, newContactLast, newNumber, idx)
+{
+
+	/*
+		  "firstname": "Landon",
+  "lastname": "Russell",
+  "phone": "1234567899",
+  "id": 1
+
+	*/
+	var tmp = {firstname:newContactFirst,lastname:newContactLast,phone:newNumber,id:selectedID};
+	var jsonPayload = JSON.stringify( tmp );
+	console.log(jsonPayload);
+    
+	var url = urlBase + '/Edit.' + extension;
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	xhr.setRequestHeader("accept", "application/json");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			console.log(this.status)
+			if (this.readyState == 4 && this.status == 201) 
+			{
+				
+				var jsonObject = JSON.parse( xhr.responseText );
+				contactListArray[idx].FirstName = jsonObject.FirstName;
+				contactListArray[idx].LastName = jsonObject.LastName;;
+				contactListArray[idx].Phone = jsonObject.Phone;
+				// displayContactsAsATable(false);
+				// closeUpdate();
+				// window.location.href = "contactmanager.html";
+			}
+		};
+		xhr.send(jsonPayload);
+
+	}
+	catch(err)
+	{
+		document.getElementById("editResult").innerHTML = err.message;
 	}
 }
 
