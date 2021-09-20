@@ -85,7 +85,7 @@
             <button type="button" id="addContactButton" class="buttons" onclick="window.location='add.html'"> Add </button><br />
             <span id="colorAddResult"></span>
 
-            <input type="text" id="searchText" placeholder="Search Contact"/>
+            <input type="text" id="searchText" onkeyup="searchContact()" placeholder="Search Contact"/>
             <button type="button" id="searchContactButton" class="search-button" onclick="searchContact();"> <i class="fa fa-search" aria-hidden="true"> </i></button><br /> 
             
             <span id="contactSearchResult"></span>
