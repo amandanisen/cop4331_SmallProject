@@ -11,9 +11,10 @@
 	} 
 	else
 	{
-		$stmt = $conn->prepare("SELECT firstName, lastName FROM Contacts WHERE Phone=?");
+        $phone = $inData["phone"];
+		$stmt = $conn->prepare("SELECT FirstName, LastName, ID, Phone FROM Contacts WHERE Phone LIKE '%" . $phone . "%' AND UserID=?");
 		# $contactName = "%" . $inData["search"] . "%";
-		$stmt->bind_param("s", $inData["phone"]);
+		$stmt->bind_param("i", $inData['userId']);
 		$stmt->execute();
 		$result = $stmt->get_result();
 		
@@ -24,7 +25,7 @@
 				$searchResults .= ",";
 			}
 			$searchCount++;
-			$searchResults .= '"' . $row["firstName"] . '", "' . $row["lastName"] . '"';
+			$searchResults .= '"' . $row["ID"] . '"';
 			//$searchResults .= '"' . $row["Phone"] . '","' . $row["ID"]);
 		}
 		
@@ -64,7 +65,7 @@
 	
 	function returnWithInfo( $searchResults )
 	{
-		$retValue = '{"Phone Number found in Database, results":[' . $searchResults . '],"error":""}';
+		$retValue = '[' . $searchResults . ']';
 		sendResultInfoAsJson( $retValue );
 	}
 	
