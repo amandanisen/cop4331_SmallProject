@@ -6,6 +6,8 @@
         document.addEventListener('DOMContentLoaded', function() 
         {
             readCookie();
+            getContacts();
+
         }, false);
 
         localStorage.getItem("userIDInput");
@@ -61,38 +63,28 @@
     </head>
 
     <body>
+        <div id="loggedInDiv">
+            <span id="userName"></span><br />
+            <button id="logoutButton" class="buttons" style="background-color: red;" onclick="doLogout()"> Log Out </button>
+        </div>
 
-    <div id="loggedInDiv">
-        <span id="userName"></span><br />
-        <button id="logoutButton" class="buttons" style="background-color: red;" onclick="doLogout()"> Log Out </button>
-    </div>
+        <div id="accessUIDiv">
+            <br />
 
-    <div id="accessUIDiv">
-        <br />
+            <button type="button" id="addContactButton" class="buttons" onclick="window.location='add.html'"> Add </button><br />
+            <span id="colorAddResult"></span>
 
-        <button type="button" id="addContactButton" class="buttons" onclick="window.location='add.html'"> Add </button><br />
-        <span id="colorAddResult"></span>
+            <input type="text" id="searchText" placeholder="Contact To Search For?"/>
+            <button type="button" id="searchContactButton" class="buttons" onclick="searchContact();"> Search</button><br />
+            <span id="contactSearchResult"></span>
 
-        <input type="text" id="searchText" placeholder="Contact To Search For?"/>
-        <button type="button" id="searchContactButton" class="buttons" onclick="searchContact();"> Search</button><br />
-        <span id="contactSearchResult"></span>
-        <p id="contactList">
-        </p><br /><br />
-    </div>
-
-    <table>
-        <tr style = "background-color: #003399; color: white;">
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Phone Number</th>
-        </tr>
-        <tr>
+        </div>
         
-        
-
-
-
-    </table>
+        <div class="contact-list">
+            <h3>Contact List</h3>
+            <div id="contact-list">
+            </div>
+        </div>
 
     </body>
 </html>
