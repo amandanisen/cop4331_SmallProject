@@ -6,8 +6,16 @@ var firstName = "";
 var lastName = "";
 var contactId = 0;
 var phoneNum = "";
-
+var contactListArray;
 var $ = document.getElementById;
+
+let cm; // global instance of ContactManager
+
+// started working on that
+function init() {
+	cm = new ContactManager();
+	cm.displayContactsAsATable('contact-list'); 
+}
 
 function doSignUp(){
 	userId = 0;
@@ -19,10 +27,10 @@ function doSignUp(){
 	
 	var email = document.getElementById("signupName").value;
 
-	console.log(email);
+	// console.log(email);
 
 	var password = document.getElementById("signupPassword").value;
-//	var hash = md5( password );
+	// var hash = md5( password );
 
 	var confirmPass = document.getElementById("confirmPassword").value;
 
@@ -41,11 +49,11 @@ function doSignUp(){
 		// translating
 		var jsonPayload = JSON.stringify(json);
 
-		console.log(jsonPayload);
+		// console.log(jsonPayload);
 		
 		var url = urlBase + '/Signup.' + extension;
 
-		console.log(url);
+		// console.log(url);
 
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", url, true);
@@ -55,16 +63,16 @@ function doSignUp(){
 		{
 			xhr.onreadystatechange = function() 
 			{
-				console.log(this.status);
+				// console.log(this.status);
 				if (this.readyState == 4 && this.status == 201) 
 				{
 					var jsonObject = JSON.parse( xhr.responseText );
 
 					// creating json object and fillig the fiels on the database
-					console.log(jsonObject);
+					// console.log(jsonObject);
 					userId = jsonObject.id;
 
-					console.log(userId);
+					// console.log(userId);
 					
 					localStorage.setItem("userIDInput",userId);
 
@@ -88,8 +96,7 @@ function doSignUp(){
 
 	else {
 		// make conf pass red
-	}
-	
+	}	
 }
 
 function doLogin()
@@ -100,18 +107,18 @@ function doLogin()
 	
 	var login = document.getElementById("loginName").value;
 
-	console.log(login);
+	// console.log(login);
 
 	var password = document.getElementById("loginPassword").value;
-//	var hash = md5( password );
+	// var hash = md5( password );
 	
 	document.getElementById("loginResult").innerHTML = "";
 
 	var tmp = {email:login,password:password};
-//	var tmp = {login:login,password:hash};
+	// var tmp = {login:login,password:hash};
 	var jsonPayload = JSON.stringify( tmp );
 
-	console.log(jsonPayload);
+	// console.log(jsonPayload);
 	
 	var url = urlBase + '/Login.' + extension;
 
@@ -123,17 +130,17 @@ function doLogin()
 	{
 		xhr.onreadystatechange = function() 
 		{
-			console.log(this.status);
-			console.log(this.readyState);
+			// console.log(this.status);
+			// console.log(this.readyState);
 
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				var jsonObject = JSON.parse( xhr.responseText );
 
-				console.log(jsonObject);
+				// console.log(jsonObject);
 				userId = jsonObject.id;
 
-				console.log(jsonObject.firstName);
+				// console.log(jsonObject.firstName);
 		
 				if( userId < 1 )
 				{		
@@ -248,48 +255,33 @@ function getContacts(){
 	var url = urlBase + '/GetContact.' + extension + '?userID=' + userId;
 	var json;
 
-	console.log(url);
+	// console.log(url);
 
 	fetch(url)
 	.then((response) => {
 		return response.json();
 	})
 	.then((myJson) => {
-		console.log(myJson[0].ID);
+		// console.log(myJson[0].ID);
 		json = myJson;
-		console.log(json);
-		console.log(json.length);
+		// console.log(json);
+		// console.log(json.length);
 
 		for (var i = 0; i < json.length; i++){
 			var obj = json[i];
-
-			console.log(obj);
-
-			// productAddToTable(obj);
-			/*
-			var first_row =document.getElementById('row2');
-
-			first_row.clone(true).appendTo('#contactList');
-
-			var fullName = first_row.find('#fullName');
-			fullName.text(obj.FirstName + " " + obj.LastName);
-
-			var phoneNum = first_row.find('#phoneNum');
-			phoneNum.text(obj.Phone);
-			*/
+			// console.log(obj);
 		}
 
-		displayContactsAsATable('contact-list',json);
+		contactListArray = json;
+		displayContactsAsATable();
 	});
 }
 
-function displayContactsAsATable(idOfContainer, contactList) {
+function displayContactsAsATable() {
     let container = document.querySelector('#' + 'contact-list');
     container.innerHTML = ''; // empty the container that contains the results
-
-	console.log(contactList[0].ID);
-
-    if(contactList.length === 0) {
+	
+    if(contactListArray.length === 0) {
       container.innerHTML = '<p>No contacts. Add some, please.</p>';
       return;
     }  
@@ -297,14 +289,14 @@ function displayContactsAsATable(idOfContainer, contactList) {
     let table = document.createElement('table');
     table.insertRow()
       .innerHTML = `<th class="sort-row">Full Name</th><th class="sort-row">Phone Number</th>`;
-    contactList.forEach((currentContact) => {
+	  contactListArray.forEach((currentContact) => {
+		console.log(currentContact.ID)
+
       let row = table.insertRow();
       row.innerHTML = 
         `
 		<td>
-		<a class="btn btn-danger" href="path/to/settings" aria-label="Delete">
-		<i class="fa fa-trash-o" aria-hidden="true" onclick="cm.deleteContact('${currentContact.ID, contactList}')"></i></a>
-			
+			<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
 			${currentContact.FirstName + " " + currentContact.LastName}</td>
         
 		<td>${currentContact.Phone}</td>
@@ -323,15 +315,77 @@ function productAddToTable(userInfo) {
 	"</tr>");
 }
 
-function deleteContact(contact, contactList){
-    for (let i = 0; i < contactList.length; i++) {
-      if (contactList[i].ID === contact) {
-        let sure = confirm(`Are you sure you want to delete ${contactList[i].FirstName}?`);
-        if (sure) contactList.splice(i, 1);
-        console.log(i);
-      }
-    }
-    displayContactsAsATable('contact-list');
+// added new para to reflecct our set up
+function deleteContact(contactDeleteID){
+	console.log("AFTER: " + contactListArray[0].ID);
+
+	console.log("Contact to be deleted: " + contactDeleteID);
+
+	for (let i = 0; i < contactListArray.length; i++) {
+		var contactIDstr = contactDeleteID.toString();
+		var contactListIDStr = contactListArray[i].ID.toString();
+		if (contactListIDStr === contactIDstr) {
+			
+		  let sure = confirm(`Are you sure you want to delete ${contactListArray[i].FirstName}?`);
+		  if (sure){
+			if(deletePostRequest(contactDeleteID)){
+				contactListArray.splice(i, 1);
+				displayContactsAsATable();
+
+			}
+		  } 
+		}
+	  }
+    displayContactsAsATable();
+}
+
+function deletePostRequest(contactId){
+	console.log("ID TO DELETE QUERY: " + contactId);
+	var json = {id:contactId};
+	// var tmp = {login:login,password:hash};
+	var jsonPayload = JSON.stringify( json );
+
+	console.log(jsonPayload);
+	
+	var url = urlBase + '/DeleteContact.' + extension;
+	console.log(url);
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	xhr.setRequestHeader("accept", "application/json");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			console.log(this.status);
+			// console.log(this.readyState);
+
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				var jsonObject = JSON.parse( xhr.responseText );
+
+				// console.log(jsonObject);
+				var message = jsonObject.message;
+
+				// console.log(jsonObject.firstName);
+		
+				if( message.includes("successfully") )
+				{		
+					// document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+					return true;
+				}else{
+					return false;
+				}
+
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		return false;
+		// document.getElementById("loginResult").innerHTML = err.message;
+	}
 }
 
 function doLogout()
@@ -343,6 +397,7 @@ function doLogout()
 	window.location.href = "index.html";
 }
 
+// idl if this is the correct add function but it's the last one i had
 function addContact()
 {
 	var newContactFirst = document.getElementById("addFirstName").value;
@@ -381,7 +436,6 @@ function addContact()
 	{
 		document.getElementById("AddResult").innerHTML = err.message;
 	}
-	
 }
 
 function searchContact()
@@ -428,22 +482,3 @@ function searchContact()
 		document.getElementById("contactSearchResult").innerHTML = err.message;
 	}
 }
-
-function editContact()
-{
-
-
-
-
-}
-
-
-function deleteContact()
-{
-
-
-
-
-
-}
-
