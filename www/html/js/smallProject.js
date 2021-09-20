@@ -7,6 +7,7 @@ var lastName = "";
 var contactId = 0;
 var phoneNum = "";
 var contactListArray;
+var searchContactList = [];
 var $ = document.getElementById;
 
 let cm; // global instance of ContactManager
@@ -273,11 +274,12 @@ function getContacts(){
 		}
 
 		contactListArray = json;
-		displayContactsAsATable();
+		displayContactsAsATable(false);
 	});
 }
 
-function displayContactsAsATable() {
+function displayContactsAsATable(isSearch) {
+	var i = 0;
     let container = document.querySelector('#' + 'contact-list');
     container.innerHTML = ''; // empty the container that contains the results
 	
@@ -289,18 +291,37 @@ function displayContactsAsATable() {
     let table = document.createElement('table');
     table.insertRow()
       .innerHTML = `<th class="sort-row">Full Name</th><th class="sort-row">Phone Number</th>`;
-	  contactListArray.forEach((currentContact) => {
-		console.log(currentContact.ID)
 
-      let row = table.insertRow();
-      row.innerHTML = 
-        `
-		<td>
-			<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
-			${currentContact.FirstName + " " + currentContact.LastName}</td>
-        
-		<td>${currentContact.Phone}</td>
-        `
+		console.log(isSearch);
+	  contactListArray.forEach((currentContact) => {
+
+		//if it was searched
+		if(isSearch){
+			searchContactList.forEach((currentSearchContact) =>{
+				if(currentContact.ID.toString() == currentSearchContact){
+					let row = table.insertRow();
+					row.innerHTML = 
+						`
+						<td>
+							<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
+							${currentContact.FirstName + " " + currentContact.LastName}</td>
+						
+						<td>${currentContact.Phone}</td>
+						`
+				}
+			});	
+		
+		}else{
+			let row = table.insertRow();
+			row.innerHTML = 
+			`
+			<td>
+				<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
+				${currentContact.FirstName + " " + currentContact.LastName}</td>
+			
+			<td>${currentContact.Phone}</td>
+			`
+		}
     });
     container.appendChild(table);
 }
@@ -330,13 +351,13 @@ function deleteContact(contactDeleteID){
 		  if (sure){
 			if(deletePostRequest(contactDeleteID)){
 				contactListArray.splice(i, 1);
-				displayContactsAsATable();
+				displayContactsAsATable(false);
 
 			}
 		  } 
 		}
 	  }
-    displayContactsAsATable();
+    displayContactsAsATable(false);
 }
 
 function deletePostRequest(contactId){
@@ -442,60 +463,30 @@ function searchContact()
 {
 	var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById("searchText");
-    for (i = 0; i < contactListArray.length; i++) {
-		var inputStr = input.value.toString();
-		var contactPhoneStr = contactListArray[i].Phone.toString();
-		if(contactPhoneStr.includes(inputStr)){
-			console.log("Contains: " + contactPhoneStr);
+	var inputStr = input.value.toString();
+	console.log(inputStr);
+	if(inputStr === ""){
+		displayContactsAsATable(false);
+		searchContactList = [];
+	}else{
+		for (i = 0; i < contactListArray.length; i++) {
+			var contactPhoneStr = contactListArray[i].Phone.toString();
+			if(contactPhoneStr.includes(inputStr)){
+				searchContactList.push(contactListArray[i].ID.toString());
+				console.log("Contains: " + contactPhoneStr);
+			}
+		
+			// // a = contactListArray[i].getElementsByTagName("a")[0];
+			// // txtValue = a.textContent || a.innerText;
+			// if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			//     li[i].style.display = "";
+			// } else {
+			//     li[i].style.display = "none";
+			// }
 		}
-	
-        // // a = contactListArray[i].getElementsByTagName("a")[0];
-        // // txtValue = a.textContent || a.innerText;
-        // if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        //     li[i].style.display = "";
-        // } else {
-        //     li[i].style.display = "none";
-        // }
-    }
-	// var srch = document.getElementById("searchNumber").value;
-	// document.getElementById("contactSearchResult").innerHTML = "";
-	
-	// var contactList = "";
+		displayContactsAsATable(true);
+		searchContactList = [];
+	}
+   
 
-	// var tmp = {phone:srch};
-	// var jsonPayload = JSON.stringify( tmp );
-
-	// var url = urlBase + '/SearchContact.' + extension;
-	
-	// var xhr = new XMLHttpRequest();
-	// xhr.open("POST", url, true);
-	// xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	// xhr.setRequestHeader("accept", "application/json");
-	// try
-	// {
-	// 	xhr.onreadystatechange = function() 
-	// 	{
-	// 		if (this.readyState == 4 && this.status == 200) 
-	// 		{
-	// 			document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
-	// 			var jsonObject = JSON.parse( xhr.responseText );
-				
-	// 			for( var i=0; i<jsonObject.results.length; i++ )
-	// 			{
-	// 				contactList += jsonObject.results[i];
-	// 				if( i < jsonObject.results.length - 1 )
-	// 				{
-	// 					contactList += "<br />\r\n";
-	// 				}
-	// 			}
-				
-	// 			document.getElementsByTagName("p")[0].innerHTML = contactList;
-	// 		}
-	// 	};
-	// 	xhr.send(jsonPayload);
-	// }
-	// catch(err)
-	// {
-	// 	document.getElementById("contactSearchResult").innerHTML = err.message;
-	// }
 }
