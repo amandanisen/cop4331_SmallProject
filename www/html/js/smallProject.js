@@ -287,6 +287,7 @@ function displayContactsAsATable(isSearch) {
     }  
 
     let table = document.createElement('table');
+	table.classList.add('styled-table')
     table.insertRow()
       .innerHTML = `<th class="sort-row">Full Name</th><th class="sort-row">Phone Number</th>`;
 
@@ -300,7 +301,7 @@ function displayContactsAsATable(isSearch) {
 					let row = table.insertRow();
 					row.innerHTML = 
 						`
-						<td>
+						<td class="active-row">
 							<i class="fa fa-pencil" aria-hidden="true" onclick="edit('${currentContact.ID}')"></i>
 							<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
 							${currentContact.FirstName + " " + currentContact.LastName}</td>
@@ -314,7 +315,7 @@ function displayContactsAsATable(isSearch) {
 			let row = table.insertRow();
 			row.innerHTML = 
 			`
-			<td>
+			<td class="active-row">
 			<i class="fa fa-pencil" aria-hidden="true" onclick="edit('${currentContact.ID}')"></i>
 			<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
 				${currentContact.FirstName + " " + currentContact.LastName}</td>
