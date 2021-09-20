@@ -3,7 +3,16 @@
     
     <script type="text/javascript" src="js/md5.js"></script>
     <script type="text/javascript" src="js/smallProject.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() 
+        {
+            readCookieUserId();
+        }, false);
 
+        localStorage.getItem("userIDInput");
+
+        console.log(localStorage.getItem("userIDInput"));
+        </script>
     <style>
         body{
             font-family: Arial, Helvetica, sans-serif;
@@ -152,18 +161,18 @@
     </style>
 </head>
 
+
 <body>
 
-    <h1 id="title">Sign Up</h1>
+    
 
     <div id="loginDiv">
         <span id="inner-title">Add contact</span>
-        <input type="number" id="addID" placeholder="User ID" /><br />
         <input type="text" id="addFirstName" placeholder="First Name"/><br/>
         <input type="text" id="addLastName" placeholder="Last Name"/><br/>
         <input type="tel" id="addNumber" placeholder="Format:888-888-8888"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required/><br/>
-        <button type="button" id="addButton" class="buttons" onclick="addContact();"> Submit </button>
-        <button style="background-color: red; margin-left:39%;" type="button" id="loginButton" class="buttons" onclick="window.location='contactmanager.html'"> Home </button>
+        <button type="button" id="addButton" class="buttons" onclick="addContact();"> Add User! </button>
+        <button style="background-color: red; margin-left:39%;" type="button" id="loginButton" class="buttons" onclick="window.location='contactmanager.html'"> Previous </button>
 
         <span id="AddResult"></span>
     </div>
