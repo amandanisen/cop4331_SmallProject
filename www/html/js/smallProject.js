@@ -440,45 +440,63 @@ function addContact()
 
 function searchContact()
 {
-	var srch = document.getElementById("searchNumber").value;
-	document.getElementById("contactSearchResult").innerHTML = "";
+	var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("searchText");
+	console.log("input: " + input);
+    for (i = 0; i < contactListArray.length; i++) {
+		console.log(contactListArray[i].Phone );
+		var contactPhoneStr = contactListArray[i].Phone.toString();
+		if(contactPhoneStr.includes(input)){
+			console.log("Contains: " + contactPhoneStr);
+		}
 	
-	var contactList = "";
-
-	var tmp = {phone:srch};
-	var jsonPayload = JSON.stringify( tmp );
-
-	var url = urlBase + '/SearchContact.' + extension;
+        // // a = contactListArray[i].getElementsByTagName("a")[0];
+        // // txtValue = a.textContent || a.innerText;
+        // if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        //     li[i].style.display = "";
+        // } else {
+        //     li[i].style.display = "none";
+        // }
+    }
+	// var srch = document.getElementById("searchNumber").value;
+	// document.getElementById("contactSearchResult").innerHTML = "";
 	
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	xhr.setRequestHeader("accept", "application/json");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
-				var jsonObject = JSON.parse( xhr.responseText );
+	// var contactList = "";
+
+	// var tmp = {phone:srch};
+	// var jsonPayload = JSON.stringify( tmp );
+
+	// var url = urlBase + '/SearchContact.' + extension;
+	
+	// var xhr = new XMLHttpRequest();
+	// xhr.open("POST", url, true);
+	// xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	// xhr.setRequestHeader("accept", "application/json");
+	// try
+	// {
+	// 	xhr.onreadystatechange = function() 
+	// 	{
+	// 		if (this.readyState == 4 && this.status == 200) 
+	// 		{
+	// 			document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
+	// 			var jsonObject = JSON.parse( xhr.responseText );
 				
-				for( var i=0; i<jsonObject.results.length; i++ )
-				{
-					contactList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
-					{
-						contactList += "<br />\r\n";
-					}
-				}
+	// 			for( var i=0; i<jsonObject.results.length; i++ )
+	// 			{
+	// 				contactList += jsonObject.results[i];
+	// 				if( i < jsonObject.results.length - 1 )
+	// 				{
+	// 					contactList += "<br />\r\n";
+	// 				}
+	// 			}
 				
-				document.getElementsByTagName("p")[0].innerHTML = contactList;
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("contactSearchResult").innerHTML = err.message;
-	}
+	// 			document.getElementsByTagName("p")[0].innerHTML = contactList;
+	// 		}
+	// 	};
+	// 	xhr.send(jsonPayload);
+	// }
+	// catch(err)
+	// {
+	// 	document.getElementById("contactSearchResult").innerHTML = err.message;
+	// }
 }
