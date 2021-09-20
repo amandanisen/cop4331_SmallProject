@@ -21,13 +21,11 @@ function init() {
 function doSignUp(){
 	userId = 0;
 
-	// TODO: 
-	firstName = "";
-	lastName = "";
-	phoneNum = ""
 	
+	var firstname = document.getElementById("firstName").value;
+	var lastname = document.getElementById("lastName").value;
+	var phone = document.getElementById("phone").value;
 	var email = document.getElementById("signupName").value;
-
 	// console.log(email);
 
 	var password = document.getElementById("signupPassword").value;
@@ -45,7 +43,7 @@ function doSignUp(){
   		// "lastname": "Russell",
   		// "phone": "407-938-4910"
 
-		var json = {email:email,password:password,firstname:firstName, lastname:lastName,phone:phoneNum};
+		var json = {email:email,password:password,firstname:firstname, lastname:lastname,phone:phone};
 
 		// translating
 		var jsonPayload = JSON.stringify(json);
@@ -548,7 +546,7 @@ function editContactPostRequest(selectedID, newContactFirst, newContactLast, new
 				contactListArray[idx].FirstName = jsonObject.FirstName;
 				contactListArray[idx].LastName = jsonObject.LastName;;
 				contactListArray[idx].Phone = jsonObject.Phone;
-				displayContactsAsATable(false);
+				// displayContactsAsATable(false);
 				// closeUpdate();
 				// window.location.href = "contactmanager.html";
 			}
