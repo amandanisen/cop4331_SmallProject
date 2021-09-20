@@ -442,11 +442,10 @@ function searchContact()
 {
 	var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById("searchText");
-	console.log("input: " + input);
     for (i = 0; i < contactListArray.length; i++) {
-		console.log(contactListArray[i].Phone );
+		var inputStr = input.value.toString();
 		var contactPhoneStr = contactListArray[i].Phone.toString();
-		if(contactPhoneStr.includes(input)){
+		if(contactPhoneStr.includes(inputStr)){
 			console.log("Contains: " + contactPhoneStr);
 		}
 	
