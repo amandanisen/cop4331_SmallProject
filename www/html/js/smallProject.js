@@ -289,7 +289,7 @@ function displayContactsAsATable(isSearch) {
     let table = document.createElement('table');
 	table.classList.add('styled-table')
     table.insertRow()
-      .innerHTML = `<th class="sort-row">Full Name</th><th class="sort-row">Phone Number</th>`;
+      .innerHTML = `<th class="firstrow" >Full Name</th><th class="firstrow">Phone Number</th>`;
 
 		console.log(isSearch);
 	  contactListArray.forEach((currentContact) => {
@@ -395,6 +395,7 @@ function deletePostRequest(contactId){
 		
 				if( message.includes("successfully") )
 				{		
+					window.location.reload(false); 
 					displayContactsAsATable(false);
 					// document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
 					return true;
@@ -490,7 +491,7 @@ function edit(contactID) {
     let phone = document.querySelector('.update .phone').value;
 	//if this was successful, close window
 	editContactRequest(contactListArray[idx].ID.toString(), name, lastname, phone, idx);
-	displayContactsAsATable(false);
+	// displayContactsAsATable(false);
 	document.querySelector('.overlay').style.display = 'none';
 	document.querySelector('.update').style.display = 'none';
 	
@@ -504,62 +505,6 @@ function edit(contactID) {
 
 
 
-  
-function editContactPostRequest(selectedID, newContactFirst, newContactLast, newNumber, idx)
-{
-
-
-	var newContactFirst = document.getElementById("newFirstName").value;
-	var newContactLast  = document.getElementById("newLastName").value;
-	var newNumber = document.getElementById("newNumber").value;
-  
-	// document.getElementById("AddResult").innerHTML = "";
-  
-	var tmp = {userID:userId,firstname:newContactFirst,lastname:newContactLast,phone:newNumber};
-	var jsonPayload = JSON.stringify( tmp );
-	console.log(jsonPayload);
-	/*
-		  "firstname": "Landon",
-  "lastname": "Russell",
-  "phone": "1234567899",
-  "id": 1
-
-	*/
-	var tmp = {firstname:newContactFirst,lastname:newContactLast,phone:newNumber,id:selectedID};
-	var jsonPayload = JSON.stringify( tmp );
-	console.log(jsonPayload);
-    
-	var url = urlBase + '/Edit.' + extension;
-	
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	xhr.setRequestHeader("accept", "application/json");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			console.log(this.status)
-			if (this.readyState == 4 && this.status == 201) 
-			{
-				
-				var jsonObject = JSON.parse( xhr.responseText );
-				contactListArray[idx].FirstName = jsonObject.FirstName;
-				contactListArray[idx].LastName = jsonObject.LastName;;
-				contactListArray[idx].Phone = jsonObject.Phone;
-				// displayContactsAsATable(false);
-				// closeUpdate();
-				// window.location.href = "contactmanager.html";
-			}
-		};
-		xhr.send(jsonPayload);
-
-	}
-	catch(err)
-	{
-		document.getElementById("editResult").innerHTML = err.message;
-	}
-}
 
 function editContactRequest(selectedID, newContactFirst, newContactLast, newNumber, idx)
 {
@@ -594,7 +539,8 @@ function editContactRequest(selectedID, newContactFirst, newContactLast, newNumb
 				contactListArray[idx].FirstName = jsonObject.FirstName;
 				contactListArray[idx].LastName = jsonObject.LastName;;
 				contactListArray[idx].Phone = jsonObject.Phone;
-				displayContactsAsATable(false);
+				// displayContactsAsATable(false);
+				window.location.reload(false); 
 				// closeUpdate();
 				// window.location.href = "contactmanager.html";
 			}
@@ -610,7 +556,7 @@ function editContactRequest(selectedID, newContactFirst, newContactLast, newNumb
 
 function searchContact()
 {
-	var input, filter, ul, li, a, i, txtValue;
+	var input;
     input = document.getElementById("searchText");
 	var inputStr = input.value.toString();
 	console.log(inputStr);
@@ -624,14 +570,7 @@ function searchContact()
 				searchContactList.push(contactListArray[i].ID.toString());
 				console.log("Contains: " + contactPhoneStr);
 			}
-		
-			// // a = contactListArray[i].getElementsByTagName("a")[0];
-			// // txtValue = a.textContent || a.innerText;
-			// if (txtValue.toUpperCase().indexOf(filter) > -1) {
-			//     li[i].style.display = "";
-			// } else {
-			//     li[i].style.display = "none";
-			// }
+
 		}
 		displayContactsAsATable(true);
 		searchContactList = [];
