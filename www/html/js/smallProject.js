@@ -303,7 +303,7 @@ function displayContactsAsATable(isSearch) {
 					row.innerHTML = 
 						`
 						<td>
-							<i class="fa fa-pencil" aria-hidden="true" onclick="editContact('${currentContact.ID}')"></i>
+							<i class="fa fa-pencil" aria-hidden="true" onclick="edit('${currentContact.ID}')"></i>
 							<i class="fa fa-trash-o" onclick="deleteContact('${currentContact.ID}')"></i> 
 							${currentContact.FirstName + " " + currentContact.LastName}</td>
 						
@@ -505,9 +505,66 @@ function edit(contactID) {
 
 
 
+  
+function editContactPostRequest(selectedID, newContactFirst, newContactLast, newNumber, idx)
+{
+
+
+	var newContactFirst = document.getElementById("newFirstName").value;
+	var newContactLast  = document.getElementById("newLastName").value;
+	var newNumber = document.getElementById("newNumber").value;
+  
+	// document.getElementById("AddResult").innerHTML = "";
+  
+	var tmp = {userID:userId,firstname:newContactFirst,lastname:newContactLast,phone:newNumber};
+	var jsonPayload = JSON.stringify( tmp );
+	console.log(jsonPayload);
+	/*
+		  "firstname": "Landon",
+  "lastname": "Russell",
+  "phone": "1234567899",
+  "id": 1
+
+	*/
+	var tmp = {firstname:newContactFirst,lastname:newContactLast,phone:newNumber,id:selectedID};
+	var jsonPayload = JSON.stringify( tmp );
+	console.log(jsonPayload);
+    
+	var url = urlBase + '/Edit.' + extension;
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	xhr.setRequestHeader("accept", "application/json");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			console.log(this.status)
+			if (this.readyState == 4 && this.status == 201) 
+			{
+				
+				var jsonObject = JSON.parse( xhr.responseText );
+				contactListArray[idx].FirstName = jsonObject.FirstName;
+				contactListArray[idx].LastName = jsonObject.LastName;;
+				contactListArray[idx].Phone = jsonObject.Phone;
+				displayContactsAsATable(false);
+				// closeUpdate();
+				// window.location.href = "contactmanager.html";
+			}
+		};
+		xhr.send(jsonPayload);
+
+	}
+	catch(err)
+	{
+		document.getElementById("editResult").innerHTML = err.message;
+	}
+}
 
 function editContactRequest(selectedID, newContactFirst, newContactLast, newNumber, idx)
 {
+
 
 	/*
 		  "firstname": "Landon",
@@ -538,7 +595,7 @@ function editContactRequest(selectedID, newContactFirst, newContactLast, newNumb
 				contactListArray[idx].FirstName = jsonObject.FirstName;
 				contactListArray[idx].LastName = jsonObject.LastName;;
 				contactListArray[idx].Phone = jsonObject.Phone;
-				// displayContactsAsATable(false);
+				displayContactsAsATable(false);
 				// closeUpdate();
 				// window.location.href = "contactmanager.html";
 			}
