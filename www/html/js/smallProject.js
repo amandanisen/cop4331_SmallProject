@@ -302,7 +302,9 @@ function displayContactsAsATable(idOfContainer, contactList) {
       row.innerHTML = 
         `
 		<td>
-			<i class="fa fa-trash" aria-hidden="true" onclick="cm.deleteContact('${currentContact.ID, contactList}')"></i> 
+		<a class="btn btn-danger" href="path/to/settings" aria-label="Delete">
+		<i class="fa fa-trash-o" aria-hidden="true" onclick="cm.deleteContact('${currentContact.ID, contactList}')"></i></a>
+			
 			${currentContact.FirstName + " " + currentContact.LastName}</td>
         
 		<td>${currentContact.Phone}</td>
